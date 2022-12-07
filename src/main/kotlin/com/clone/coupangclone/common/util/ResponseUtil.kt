@@ -7,13 +7,11 @@ import com.clone.coupangclone.common.model.CommonResponse
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Scheduler
 import javax.servlet.http.HttpServletRequest
-import org.springframework.security.core.Authentication
 
 class ResponseUtil {
     companion object {
         fun <T> result(
             response: Observable<T>,
-            authentication: Authentication,
             request: Any?,
             servlet: HttpServletRequest,
             scheduler: Scheduler

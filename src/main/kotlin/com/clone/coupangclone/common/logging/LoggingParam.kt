@@ -1,5 +1,6 @@
 package com.clone.coupangclone.common.logging
 
+import com.clone.coupangclone.common.extension.isNullOrEmptyOrBlank
 import javax.servlet.http.HttpServletRequest
 import org.apache.commons.lang3.exception.ExceptionUtils
 
@@ -22,7 +23,7 @@ class LoggingParam(
         this.ip = Log.getIp(servlet)
         this.url = servlet.requestURL.toString()
         this.header = Log.getHeader(servlet)
-        if(this.request == null){
+        if(this.request.isNullOrEmptyOrBlank()){
             this.request = Log.getRequestBody(servlet)
         }
         return this
