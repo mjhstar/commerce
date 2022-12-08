@@ -1,6 +1,6 @@
 package com.clone.coupangclone.common.config.security
 
-import com.clone.coupangclone.common.extension.TimeExtension
+import com.clone.coupangclone.common.extension.TimeUtils
 import com.clone.coupangclone.common.extension.isNullOrEmptyOrBlank
 import com.clone.coupangclone.common.extension.toJson
 import com.clone.coupangclone.common.logging.Log
@@ -36,7 +36,7 @@ class AuthEntryPointHandler: AuthenticationEntryPoint {
         data["message"] = "Invalid Access"
         data["path"] = request.requestURI
         data["requestTime"] = request.getHeader("AuthorizeTime").toLong() * 1000
-        data["responseTime"] = TimeExtension.currentTime()
+        data["responseTime"] = TimeUtils.currentTimeMillis()
         response.writer.write(data.toJson())
     }
 }

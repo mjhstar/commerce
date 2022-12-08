@@ -3,7 +3,9 @@ package com.clone.coupangclone.user.controller
 import com.clone.coupangclone.common.config.rx.SchedulerFactory
 import com.clone.coupangclone.common.model.CommonResponse
 import com.clone.coupangclone.common.util.ResponseUtil
-import com.clone.coupangclone.user.request.SignUpRequest
+import com.clone.coupangclone.user.model.request.LoginRequest
+import com.clone.coupangclone.user.model.request.RefreshTokenRequest
+import com.clone.coupangclone.user.model.request.SignUpRequest
 import com.clone.coupangclone.user.service.UserService
 import io.reactivex.rxjava3.core.Observable
 import javax.servlet.http.HttpServletRequest
@@ -31,7 +33,33 @@ class UserController(
         @RequestBody request: SignUpRequest
     ): Observable<CommonResponse> {
         return ResponseUtil.result(
-            response = userService.signUp(request),
+            response = Observable.fromCallable { userService.signUp(request) },
+            scheduler = SchedulerFactory.GLOBAL.scheduler,
+            request = request,
+            servlet = servlet
+        )
+    }
+
+    @PostMapping(LOGIN_URL)
+    fun login(
+        servlet: HttpServletRequest,
+        @RequestBody request: LoginRequest
+    ): Observable<CommonResponse> {
+        return ResponseUtil.result(
+            response = Observable.fromCallable { userService.login(request) },
+            scheduler = SchedulerFactory.GLOBAL.scheduler,
+            request = request,
+            servlet = servlet
+        )
+    }
+
+    @PostMapping(REFRESH_TOKEN_URL)
+    fun getRefreshToken(
+        servlet: HttpServletRequest,
+        @RequestBody request: RefreshTokenRequest
+    ): Observable<CommonResponse> {
+        return ResponseUtil.result(
+            response = Observable.fromCallable { userService.getRefreshToken(request) },
             scheduler = SchedulerFactory.GLOBAL.scheduler,
             request = request,
             servlet = servlet

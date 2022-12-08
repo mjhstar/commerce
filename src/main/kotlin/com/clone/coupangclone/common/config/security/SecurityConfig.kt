@@ -1,5 +1,6 @@
 package com.clone.coupangclone.common.config.security
 
+import com.clone.coupangclone.user.service.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -12,11 +13,12 @@ import org.springframework.security.config.http.SessionCreationPolicy
 @EnableWebSecurity
 class SecurityConfig(
     private val authEntryPointHandler: AuthEntryPointHandler,
-    private val accessDeniedHandler: AccessDeniedHandler
+    private val accessDeniedHandler: AccessDeniedHandler,
+    private val jwtTokenProvider: JwtTokenProvider
 ): WebSecurityConfigurerAdapter() {
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager {
-        return super.authenticationManagerBean()
+        return CustomAuthenticationManager()
     }
 
 
@@ -32,11 +34,10 @@ class SecurityConfig(
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            //TODO
-            .addFilter(BasicAuthFilter(authenticationManager()))
+            .addFilter(BasicAuthFilter(authenticationManager(), jwtTokenProvider))
             .authorizeRequests()
             .antMatchers(
-                "/test-alive",
+//                "/test-alive",
                 "/user/v1/*"
             ).permitAll()
             .anyRequest()

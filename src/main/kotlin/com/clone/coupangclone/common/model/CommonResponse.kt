@@ -1,6 +1,6 @@
 package com.clone.coupangclone.common.model
 
-import com.clone.coupangclone.common.extension.TimeExtension
+import com.clone.coupangclone.common.extension.TimeUtils
 import com.clone.coupangclone.common.web.exception.BusinessException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MissingServletRequestParameterException
@@ -11,7 +11,7 @@ class CommonResponse(
     val message: String?,
     val data: Any?,
     val requestTime: Long,
-    val responseTime: Long = TimeExtension.currentTime()
+    val responseTime: Long = TimeUtils.currentTimeMillis()
 ) {
     companion object {
         fun <T> success(data: T, requestTime: Long): CommonResponse {
@@ -33,7 +33,7 @@ class CommonResponse(
         }
 
         fun error(e: Throwable, data: Any?): CommonResponse {
-            return error(e, data, TimeExtension.currentTime())
+            return error(e, data, TimeUtils.currentTimeMillis())
         }
 
         fun error(e: Throwable, requestTime: Long): CommonResponse {

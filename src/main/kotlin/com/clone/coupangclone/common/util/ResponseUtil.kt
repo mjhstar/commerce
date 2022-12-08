@@ -1,6 +1,6 @@
 package com.clone.coupangclone.common.util
 
-import com.clone.coupangclone.common.extension.TimeExtension
+import com.clone.coupangclone.common.extension.TimeUtils
 import com.clone.coupangclone.common.logging.Log
 import com.clone.coupangclone.common.logging.LoggingParam
 import com.clone.coupangclone.common.model.CommonResponse
@@ -16,7 +16,7 @@ class ResponseUtil {
             servlet: HttpServletRequest,
             scheduler: Scheduler
         ): Observable<CommonResponse> {
-            val requestTime = TimeExtension.currentTime()
+            val requestTime = TimeUtils.currentTimeMillis()
             val loggingParam = LoggingParam(
                 request = request
             ).servlet(servlet)
@@ -25,7 +25,7 @@ class ResponseUtil {
                 .map { CommonResponse.success(it, requestTime) }
                 .doOnSubscribe { Log.success(it, loggingParam) }
                 .doOnError { Log.error(loggingParam.error(it)) }
-                .onErrorReturn { CommonResponse.error(it, requestTime) }
+                .onErrorReturn { CommonResponse.error(it, request, requestTime) }
                 .subscribeOn(scheduler)
                 .observeOn(scheduler)
         }
@@ -35,7 +35,7 @@ class ResponseUtil {
             servlet: HttpServletRequest,
             scheduler: Scheduler
         ): Observable<CommonResponse> {
-            val requestTime = TimeExtension.currentTime()
+            val requestTime = TimeUtils.currentTimeMillis()
             val loggingParam = LoggingParam().servlet(servlet)
             return response
                 .map { CommonResponse.success(it, requestTime) }

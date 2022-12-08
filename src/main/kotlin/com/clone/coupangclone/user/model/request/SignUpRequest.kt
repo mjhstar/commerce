@@ -1,8 +1,10 @@
-package com.clone.coupangclone.user.request
+package com.clone.coupangclone.user.model.request
 
 import com.clone.coupangclone.common.extension.aesEncode
 import com.clone.coupangclone.common.extension.toJson
 import com.clone.coupangclone.common.extension.toModel
+import com.clone.coupangclone.user.model.AccessTokenParam
+import com.clone.coupangclone.user.model.RefreshTokenParam
 
 class SignUpRequest(
     val email: String,
@@ -30,5 +32,18 @@ class SignUpRequest(
     fun getTerms(): String {
         val termMap = this.terms.toJson().toModel<Map<String, Boolean>>()
         return termMap.filter { it.value }.keys.toJson()
+    }
+
+    fun toRefreshTokenParam():RefreshTokenParam{
+        return RefreshTokenParam(
+            email = this.email
+        )
+    }
+
+    fun toAccessTokenParam(userIdx: Long): AccessTokenParam{
+        return AccessTokenParam(
+            userIdx = userIdx,
+            email = this.email
+        )
     }
 }

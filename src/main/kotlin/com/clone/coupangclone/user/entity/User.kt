@@ -1,11 +1,12 @@
 package com.clone.coupangclone.user.entity
 
+import com.clone.coupangclone.user.model.request.SignUpRequest
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 
-@Entity
+@Entity(name = "USER")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +15,19 @@ class User(
     val email: String,
     val password: String,
     val phoneNumber: String,
+    val refreshToken: String,
     val terms: String
 ) {
+    companion object{
+        fun createBy(request: SignUpRequest, token: String): User{
+            return User(
+                name = request.name,
+                email = request.email,
+                password = request.getPW(),
+                phoneNumber = request.getPH(),
+                refreshToken = token,
+                terms = request.getTerms()
+            )
+        }
+    }
 }

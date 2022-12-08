@@ -1,15 +1,14 @@
 package com.clone.coupangclone.common.extension
 
 import com.amazonaws.util.Base16
+import com.clone.coupangclone.common.config.security.Keys
 import java.security.Key
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import org.apache.commons.lang3.RandomStringUtils
 
-const val GENERAL_KEY = "!@#EncodeEncodea<>?"
-
-fun String.aesEncode(key: String = GENERAL_KEY, randomHeader: Boolean = true): String {
+fun String.aesEncode(key: String = Keys.GENERAL_KEY, randomHeader: Boolean = true): String {
     return try {
         val c = Cipher.getInstance("AES/CBC/PKCS5Padding")
         c.init(Cipher.ENCRYPT_MODE, key.getKeySpec(), IvParameterSpec(key.substring(0, 16).toByteArray()))
@@ -26,7 +25,7 @@ fun String.aesEncode(key: String = GENERAL_KEY, randomHeader: Boolean = true): S
     }
 }
 
-fun String.aesDecode(key: String = GENERAL_KEY): String {
+fun String.aesDecode(key: String = Keys.GENERAL_KEY): String {
     return try {
         val c = Cipher.getInstance("AES/CBC/PKCS5Padding")
         c.init(
