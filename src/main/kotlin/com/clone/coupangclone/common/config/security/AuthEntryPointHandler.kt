@@ -15,7 +15,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
 @Component
-class AuthEntryPointHandler: AuthenticationEntryPoint {
+class AuthEntryPointHandler : AuthenticationEntryPoint {
     @Throws(Exception::class)
     override fun commence(
         request: HttpServletRequest,
@@ -23,7 +23,7 @@ class AuthEntryPointHandler: AuthenticationEntryPoint {
         authException: AuthenticationException
     ) {
         val param = LoggingParam().error(authException).servlet(request)
-        if(param.request.isNullOrEmptyOrBlank()){
+        if (param.request.isNullOrEmptyOrBlank()) {
             Log.error(param)
         }
         response.apply {
@@ -31,11 +31,15 @@ class AuthEntryPointHandler: AuthenticationEntryPoint {
             this.contentType = MediaType.APPLICATION_JSON_VALUE
             this.characterEncoding = StandardCharsets.UTF_8.toString()
         }
-        val data = mutableMapOf<String, Any>()
+        val data = mutableMapOf<String, Any?>()
         data["status"] = 999
         data["message"] = "Invalid Access"
         data["path"] = request.requestURI
-        data["requestTime"] = request.getHeader("AuthorizeTime").toLong() * 1000
+        data["requestTime"] = try {
+            request.getHeader("AuthorizeTime").toLong() * 1000
+        } catch (e: Exception) {
+            TimeUtils.currentTimeMillis()
+        }
         data["responseTime"] = TimeUtils.currentTimeMillis()
         response.writer.write(data.toJson())
     }

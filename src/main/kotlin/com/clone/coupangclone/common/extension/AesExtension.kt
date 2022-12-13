@@ -1,6 +1,7 @@
 package com.clone.coupangclone.common.extension
 
 import com.amazonaws.util.Base16
+import com.amazonaws.util.Base64
 import com.clone.coupangclone.common.config.security.Keys
 import java.security.Key
 import javax.crypto.Cipher
@@ -33,7 +34,7 @@ fun String.aesDecode(key: String = Keys.GENERAL_KEY): String {
             key.getKeySpec(),
             IvParameterSpec(key.substring(0, 16).toByteArray(charset("UTF-8")))
         )
-        val byteStr = com.amazonaws.util.Base64.decode(this.toByteArray())
+        val byteStr = Base64.decode(this.toByteArray())
         val input = String(c.doFinal(byteStr), charset("UTF-8"))
         if (input.length > 5 && input[5] == '\u000c') {
             input.substring(6)

@@ -38,7 +38,7 @@ class SecurityConfig(
             .authorizeRequests()
             .antMatchers(
 //                "/test-alive",
-                "/user/v1/*"
+                "/user/v1/**"
             ).permitAll()
             .anyRequest()
             .authenticated()

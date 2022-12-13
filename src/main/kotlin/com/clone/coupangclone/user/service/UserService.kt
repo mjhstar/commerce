@@ -1,20 +1,29 @@
 package com.clone.coupangclone.user.service
 
 import com.clone.coupangclone.common.config.security.Keys
+import com.clone.coupangclone.common.extension.TimeUtils
 import com.clone.coupangclone.common.extension.aesDecode
+import com.clone.coupangclone.common.extension.aesEncode
 import com.clone.coupangclone.common.extension.isValidEmail
 import com.clone.coupangclone.common.web.exception.BusinessException
 import com.clone.coupangclone.common.web.exception.ErrorCode
 import com.clone.coupangclone.user.entity.User
 import com.clone.coupangclone.user.model.AccessTokenParam
+import com.clone.coupangclone.user.model.request.ChangePwRequest
+import com.clone.coupangclone.user.model.request.FindIdRequest
+import com.clone.coupangclone.user.model.request.FindPwRequest
 import com.clone.coupangclone.user.model.request.LoginRequest
 import com.clone.coupangclone.user.model.request.RefreshTokenRequest
 import com.clone.coupangclone.user.model.request.SignUpRequest
+import com.clone.coupangclone.user.model.response.ChangePwResponse
+import com.clone.coupangclone.user.model.response.FindIdResponse
+import com.clone.coupangclone.user.model.response.FindPwResponse
 import com.clone.coupangclone.user.model.response.LoginResponse
 import com.clone.coupangclone.user.model.response.RefreshTokenResponse
 import com.clone.coupangclone.user.model.response.SignUpResponse
 import com.clone.coupangclone.user.repository.UserRepository
 import com.clone.coupangclone.user.repository.createUser
+import com.clone.coupangclone.user.repository.findUser
 import org.springframework.stereotype.Service
 
 @Service
@@ -70,6 +79,48 @@ class UserService(
             userName = user.name,
             refreshToken = user.refreshToken,
             accessToken = accessToken
+        )
+    }
+
+    fun findId(request: FindIdRequest): FindIdResponse{
+        val user = userRepository.findUser(request.name, request.getPH())
+        return FindIdResponse(email = user.email)
+    }
+
+    fun findPw(request: FindPwRequest): FindPwResponse{
+        val user = userRepository.findUser(
+            name = request.name,
+            phoneNumber = request.getPH(),
+            email = request.email
+        )
+        return FindPwResponse(
+            name = user.name,
+            email = user.email,
+            phoneNumber = user.phoneNumber,
+            key = (Keys.FIND_PASSWORD_KEY + TimeUtils.currentTimeMillis().toString()).aesEncode()
+        )
+    }
+
+    fun changePw(request: ChangePwRequest): ChangePwResponse{
+        if(!request.checkKey()){
+            throw BusinessException(ErrorCode.INVALID_REQUEST)
+        }
+        if(!request.checkPassword()){
+            throw BusinessException(ErrorCode.MISMATCH_PASSWORD)
+        }
+        val user = userRepository.findUser(
+            name = request.name,
+            email = request.email,
+            phoneNumber = request.getPH()
+        )
+        user.apply {
+            this.password = request.getPW()
+            this.updatedAt = TimeUtils.currentTimeMillis()
+        }
+        userRepository.save(user)
+        return ChangePwResponse(
+            email = user.email,
+            complete = true
         )
     }
 }
