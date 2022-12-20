@@ -26,6 +26,7 @@ class JwtTokenProvider(
         return Jwts.builder()
             .setHeaderParam("type", "JWT")
             .claim("userIdx", param.userIdx)
+            .claim("type",param.type)
             .claim("email", param.email)
             .claim("createdAt", param.createdAt)
             .setIssuer("jhmoon")

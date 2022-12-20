@@ -37,8 +37,9 @@ class SecurityConfig(
             .addFilter(BasicAuthFilter(authenticationManager(), jwtTokenProvider))
             .authorizeRequests()
             .antMatchers(
-//                "/test-alive",
-                "/user/v1/**"
+                "/test-alive",
+                "/user/v1/**",
+                "/product/**"
             ).permitAll()
             .anyRequest()
             .authenticated()

@@ -17,6 +17,10 @@ enum class ErrorCode(
     NOT_EXIST_USER(HttpStatus.BAD_REQUEST, "USER-6", "존재하지 않는 회원정보입니다."),
     MISMATCH_PASSWORD(HttpStatus.BAD_REQUEST, "USER-7", "입력한 두 개의 비밀번호가 일치하지 않습니다."),
 
+    INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "CATE-1", "카테고리가 이미 존재하거나, 상위 카테고리가 존재하지 않습니다."),
+
+
+
     MISMATCH_TOKEN_ISSUER(HttpStatus.BAD_REQUEST, "TOKEN-1", "토큰 발급자가 유효하지 않습니다."),
 
 

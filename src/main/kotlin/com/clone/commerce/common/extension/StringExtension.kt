@@ -13,3 +13,7 @@ fun String?.isValidEmail(): Boolean {
     }
     return false
 }
+
+fun String.getId(): String{
+    return this.substringBefore("@")
+}

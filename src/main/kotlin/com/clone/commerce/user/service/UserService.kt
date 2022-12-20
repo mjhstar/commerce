@@ -73,7 +73,13 @@ class UserService(
         if (user.refreshToken != request.refreshToken) {
             throw BusinessException(ErrorCode.INVALID_USER_TOKEN)
         }
-        val accessToken = jwtTokenProvider.createAccessToken(AccessTokenParam(user.userIdx, user.email))
+        val accessToken = jwtTokenProvider.createAccessToken(
+            AccessTokenParam(
+                userIdx = user.userIdx,
+                type = user.type,
+                email = user.email
+            )
+        )
         return LoginResponse(
             email = user.email,
             userName = user.name,
@@ -82,12 +88,12 @@ class UserService(
         )
     }
 
-    fun findId(request: FindIdRequest): FindIdResponse{
+    fun findId(request: FindIdRequest): FindIdResponse {
         val user = userRepository.findUser(request.name, request.getPH())
         return FindIdResponse(email = user.email)
     }
 
-    fun findPw(request: FindPwRequest): FindPwResponse{
+    fun findPw(request: FindPwRequest): FindPwResponse {
         val user = userRepository.findUser(
             name = request.name,
             phoneNumber = request.getPH(),
@@ -101,11 +107,11 @@ class UserService(
         )
     }
 
-    fun changePw(request: ChangePwRequest): ChangePwResponse{
-        if(!request.checkKey()){
+    fun changePw(request: ChangePwRequest): ChangePwResponse {
+        if (!request.checkKey()) {
             throw BusinessException(ErrorCode.INVALID_REQUEST)
         }
-        if(!request.checkPassword()){
+        if (!request.checkPassword()) {
             throw BusinessException(ErrorCode.MISMATCH_PASSWORD)
         }
         val user = userRepository.findUser(

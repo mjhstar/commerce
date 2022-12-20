@@ -3,11 +3,13 @@ package com.clone.commerce.user.model.request
 import com.clone.commerce.common.extension.aesEncode
 import com.clone.commerce.common.extension.toJson
 import com.clone.commerce.common.extension.toModel
+import com.clone.commerce.user.enums.UserType
 import com.clone.commerce.user.model.AccessTokenParam
 import com.clone.commerce.user.model.RefreshTokenParam
 
 class SignUpRequest(
     val email: String,
+    val type: UserType,
     private val password: String,
     val name: String,
     private val phoneNumber: String,
@@ -43,6 +45,7 @@ class SignUpRequest(
     fun toAccessTokenParam(userIdx: Long): AccessTokenParam{
         return AccessTokenParam(
             userIdx = userIdx,
+            type = this.type,
             email = this.email
         )
     }
