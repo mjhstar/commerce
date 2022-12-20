@@ -1,1 +1,1 @@
-rootProject.name = "coupang-clone"
+rootProject.name = "commerce"
