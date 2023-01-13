@@ -37,17 +37,19 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("mysql:mysql-connector-java:8.0.29")
-    implementation("com.querydsl:querydsl-apt:$querydslVersion")
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-
-
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+}
+
+sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+    kotlin.srcDir("$buildDir/generated/source/kapt/main")
 }
 
 tasks.withType<KotlinCompile> {

@@ -62,6 +62,9 @@ class JwtTokenProvider(
     }
 
     fun getUser(token: String): User? {
+        if(token.isBlank()){
+            return null
+        }
         val claims = Jwts.parser().setSigningKey(Keys.GENERAL_KEY).parseClaimsJws(token).body
         val issuer = claims.issuer
         if (issuer != "jhmoon") {
