@@ -1,8 +1,10 @@
 package com.clone.commerce.product.controller
 
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/product/customer")
+@RestController
+@RequestMapping("/product/customer")
 class CustomerProductController(
 ) {
     companion object{

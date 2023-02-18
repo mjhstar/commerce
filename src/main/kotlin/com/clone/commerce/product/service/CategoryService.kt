@@ -79,5 +79,4 @@ class CategoryService(
         val mainCategoryList = mainCategoryRepository.findAll()
         return MainCategoryResponse.createBy(mainCategoryList)
     }
-
 }
