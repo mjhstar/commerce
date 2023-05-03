@@ -42,11 +42,25 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation("org.mongodb:mongodb-driver-core:4.0.5")
+    implementation("org.mongodb:mongodb-driver-sync:4.0.5")
+    implementation("org.mongodb:bson:4.0.5")
+
+    implementation("com.querydsl:querydsl-mongodb:$querydslVersion")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+}
+
+kapt {
+    annotationProcessor("org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor")
 }
 
 tasks.withType<KotlinCompile> {
