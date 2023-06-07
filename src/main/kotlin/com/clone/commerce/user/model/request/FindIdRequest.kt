@@ -8,8 +8,4 @@ class FindIdRequest(
         name = this.name,
         phoneNumber = this.phoneNumber
     )
-
-    fun getPH():String{
-        return this.phoneNumber.replace("-","")
-    }
 }

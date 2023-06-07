@@ -20,37 +20,5 @@ class CommonResponse<T>(
             )
         }
 
-        //        fun <T> error(e: Throwable, data: T?): CommonResponse<T> {
-        //            return error(e, data, TimeUtils.currentTimeMillis())
-        //        }
-        //
-        //        fun <T> error(e: Throwable, requestTime: Long): CommonResponse<T> {
-        //            return error(e, null, requestTime)
-        //        }
-        //
-        //        fun <T> error(e: Throwable, data: T?, requestTime: Long): CommonResponse<T> {
-        //            return if (e is BusinessException) {
-        //                CommonResponse(
-        //                    status = e.code,
-        //                    message = e.message,
-        //                    data = data,
-        //                    requestTime = requestTime
-        //                )
-        //            } else if (e is MissingServletRequestParameterException || e is MissingServletRequestPartException) {
-        //                CommonResponse(
-        //                    status = HttpStatus.BAD_REQUEST.value().toString(),
-        //                    message = "BadRequest",
-        //                    data = data,
-        //                    requestTime = requestTime
-        //                )
-        //            } else {
-        //                CommonResponse(
-        //                    status = HttpStatus.INTERNAL_SERVER_ERROR.value().toString(),
-        //                    message = "Interval Server Error",
-        //                    data = data,
-        //                    requestTime = requestTime
-        //                )
-        //            }
-        //        }
     }
 }
