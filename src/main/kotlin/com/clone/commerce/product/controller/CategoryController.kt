@@ -41,7 +41,14 @@ class CategoryController(
         val userId = authentication.getEmail().getId()
         val userType = authentication.getType()
         return ResponseUtil.result(
-            response = Observable.fromCallable { categoryService.registerMainCategory(request, userType, userId) },
+            response = Observable.fromCallable {
+                categoryService.registerMainCategory(
+                    request.toModel(
+                        userType,
+                        userId
+                    )
+                )
+            },
             scheduler = SchedulerFactory.GLOBAL.scheduler,
             request = request,
             servlet = servlet
@@ -81,7 +88,7 @@ class CategoryController(
     fun findMainCategory(
         servlet: HttpServletRequest,
         authentication: Authentication
-    ): Observable<CommonResponse>{
+    ): Observable<CommonResponse> {
         return ResponseUtil.result(
             response = Observable.fromCallable { categoryService.findMainCategory() },
             scheduler = SchedulerFactory.GLOBAL.scheduler,

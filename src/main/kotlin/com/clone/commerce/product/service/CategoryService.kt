@@ -6,7 +6,7 @@ import com.clone.commerce.product.entity.DetailCategory
 import com.clone.commerce.product.entity.MainCategory
 import com.clone.commerce.product.entity.SubCategory
 import com.clone.commerce.product.model.request.CategoryRegisterRequest
-import com.clone.commerce.product.model.request.MainCategoryRegisterRequest
+import com.clone.commerce.product.model.request.MainCategoryRegisterRequestModel
 import com.clone.commerce.product.model.response.AllCategoryResponse
 import com.clone.commerce.product.model.response.CategoryRegisterResponse
 import com.clone.commerce.product.model.response.MainCategoryRegisterResponse
@@ -24,17 +24,15 @@ class CategoryService(
     private val detailCategoryRepository: DetailCategoryRepository
 ) {
     fun registerMainCategory(
-        request: MainCategoryRegisterRequest,
-        userType: UserType,
-        userId: String
+        request: MainCategoryRegisterRequestModel
     ): MainCategoryRegisterResponse {
-        if (userType != UserType.ADMIN) {
+        if (request.userType != UserType.ADMIN) {
             throw BusinessException(ErrorCode.INVALID_REQUEST)
         }
         val mainCategory = mainCategoryRepository.save(
             MainCategory(
                 name = request.categoryName,
-                createdBy = userId
+                createdBy = request.userId
             )
         )
         return MainCategoryRegisterResponse(
