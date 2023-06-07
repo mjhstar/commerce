@@ -23,30 +23,20 @@ class JwtTokenProvider(
     fun createAccessToken(param: AccessTokenParam): String {
         val signKey =
             SecretKeySpec(DatatypeConverter.parseBase64Binary(Keys.GENERAL_KEY), SignatureAlgorithm.HS256.jcaName)
-        return Jwts.builder()
-            .setHeaderParam("type", "JWT")
-            .claim("userIdx", param.userIdx)
-            .claim("type",param.type)
-            .claim("email", param.email)
-            .claim("createdAt", param.createdAt)
-            .setIssuer("jhmoon")
+        return Jwts.builder().setHeaderParam("type", "JWT").claim("userIdx", param.userIdx).claim("type", param.type)
+            .claim("email", param.email).claim("createdAt", param.createdAt).setIssuer("jhmoon")
             .signWith(SignatureAlgorithm.HS256, signKey)
-            .setExpiration(Date.from(TimeUtils.currentTime().plusHours(1).toInstant()))
-            .compact()
+            .setExpiration(Date.from(TimeUtils.currentTime().plusHours(1).toInstant())).compact()
     }
 
     fun createRefreshToken(param: RefreshTokenParam): String {
         val signKey =
             SecretKeySpec(DatatypeConverter.parseBase64Binary(Keys.GENERAL_KEY), SignatureAlgorithm.HS256.jcaName)
-        return Jwts.builder()
-            .setIssuer("jhmoon")
-            .claim("email", param.email)
-            .claim("createdAt", param.createdAt)
-            .signWith(SignatureAlgorithm.HS256, signKey)
-            .compact()
+        return Jwts.builder().setIssuer("jhmoon").claim("email", param.email).claim("createdAt", param.createdAt)
+            .signWith(SignatureAlgorithm.HS256, signKey).compact()
     }
 
-    fun getBaseTime(request: HttpServletRequest): Long{
+    fun getBaseTime(request: HttpServletRequest): Long {
         return try {
             var authorizeTime: Long = request.getHeader("AuthorizeTime").toLong()
             if (authorizeTime == 0L) {
@@ -62,7 +52,7 @@ class JwtTokenProvider(
     }
 
     fun getUser(token: String): User? {
-        if(token.isBlank()){
+        if (token.isBlank()) {
             return null
         }
         val claims = Jwts.parser().setSigningKey(Keys.GENERAL_KEY).parseClaimsJws(token).body

@@ -5,4 +5,9 @@ class RefreshTokenRequest(
     val password: String,
     val clientKey: String
 ) {
+    fun toModel() = RefreshTokenRequestModel(
+        email = this.email,
+        password = this.password,
+        clientKey = this.clientKey
+    )
 }

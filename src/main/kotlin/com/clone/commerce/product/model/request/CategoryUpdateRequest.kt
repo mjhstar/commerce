@@ -6,5 +6,10 @@ class CategoryUpdateRequest(
     val subCategory: String?,
     val detailCategory: String?
 ) {
-
+    fun toModel() = CategoryUpdateRequestModel(
+        idx = this.idx,
+        mainCategory = this.mainCategory,
+        subCategory = this.subCategory,
+        detailCategory = this.detailCategory
+    )
 }

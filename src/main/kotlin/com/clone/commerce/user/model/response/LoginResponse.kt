@@ -6,4 +6,12 @@ class LoginResponse(
     val refreshToken: String,
     val accessToken: String
 ) {
+    companion object {
+        fun createBy(model: LoginResponseModel) = LoginResponse(
+            email = model.email,
+            userName = model.userName,
+            refreshToken = model.refreshToken,
+            accessToken = model.accessToken
+        )
+    }
 }

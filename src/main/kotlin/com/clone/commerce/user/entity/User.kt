@@ -2,7 +2,7 @@ package com.clone.commerce.user.entity
 
 import com.clone.commerce.common.extension.TimeUtils
 import com.clone.commerce.user.enums.UserType
-import com.clone.commerce.user.model.request.SignUpRequest
+import com.clone.commerce.user.model.request.SignUpRequestModel
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -27,7 +27,7 @@ class User(
     var updatedAt: Long? = null
 ) {
     companion object {
-        fun createBy(request: SignUpRequest, token: String): User {
+        fun createBy(request: SignUpRequestModel, token: String): User {
             return User(
                 name = request.name,
                 type = request.type,

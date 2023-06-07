@@ -5,12 +5,12 @@ import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.product.entity.DetailCategory
 import com.clone.commerce.product.entity.MainCategory
 import com.clone.commerce.product.entity.SubCategory
-import com.clone.commerce.product.model.request.CategoryRegisterRequest
+import com.clone.commerce.product.model.request.CategoryRegisterRequestModel
 import com.clone.commerce.product.model.request.MainCategoryRegisterRequestModel
-import com.clone.commerce.product.model.response.AllCategoryResponse
-import com.clone.commerce.product.model.response.CategoryRegisterResponse
-import com.clone.commerce.product.model.response.MainCategoryRegisterResponse
-import com.clone.commerce.product.model.response.MainCategoryResponse
+import com.clone.commerce.product.model.response.AllCategoryResponseModel
+import com.clone.commerce.product.model.response.CategoryRegisterResponseModel
+import com.clone.commerce.product.model.response.MainCategoryRegisterResponseModel
+import com.clone.commerce.product.model.response.MainCategoryResponseModel
 import com.clone.commerce.product.repository.DetailCategoryRepository
 import com.clone.commerce.product.repository.MainCategoryRepository
 import com.clone.commerce.product.repository.SubCategoryRepository
@@ -25,7 +25,7 @@ class CategoryService(
 ) {
     fun registerMainCategory(
         request: MainCategoryRegisterRequestModel
-    ): MainCategoryRegisterResponse {
+    ): MainCategoryRegisterResponseModel {
         if (request.userType != UserType.ADMIN) {
             throw BusinessException(ErrorCode.INVALID_REQUEST)
         }
@@ -35,16 +35,16 @@ class CategoryService(
                 createdBy = request.userId
             )
         )
-        return MainCategoryRegisterResponse(
+        return MainCategoryRegisterResponseModel(
             idx = mainCategory.idx,
             name = mainCategory.name
         )
     }
 
     fun registerCategory(
-        request: CategoryRegisterRequest, userId: String, userType: UserType
-    ): CategoryRegisterResponse {
-        if (userType != UserType.ADMIN) {
+        request: CategoryRegisterRequestModel
+    ): CategoryRegisterResponseModel {
+        if (request.userType != UserType.ADMIN) {
             throw BusinessException(ErrorCode.INVALID_REQUEST)
         }
         val mainCategory = mainCategoryRepository.findByIdx(request.mainCategoryIdx)
@@ -53,7 +53,7 @@ class CategoryService(
             SubCategory(
                 name = request.subCategoryName,
                 mainCategory = mainCategory,
-                createdBy = userId
+                createdBy = request.userId
             )
         )
         val detailCategory = request.detailCategoryName?.let {
@@ -61,20 +61,20 @@ class CategoryService(
                 DetailCategory(
                     name = it,
                     subCategory = subCategory,
-                    createdBy = userId
+                    createdBy = request.userId
                 )
             )
         }
-        return CategoryRegisterResponse.createBy(mainCategory, subCategory, detailCategory)
+        return CategoryRegisterResponseModel.createBy(mainCategory, subCategory, detailCategory)
     }
 
-    fun findAllCategory(): AllCategoryResponse {
+    fun findAllCategory(): AllCategoryResponseModel {
         val mainCategoryList = mainCategoryRepository.findAll()
-        return AllCategoryResponse.createBy(mainCategoryList)
+        return AllCategoryResponseModel.createBy(mainCategoryList)
     }
 
-    fun findMainCategory(): MainCategoryResponse {
+    fun findMainCategory(): MainCategoryResponseModel {
         val mainCategoryList = mainCategoryRepository.findAll()
-        return MainCategoryResponse.createBy(mainCategoryList)
+        return MainCategoryResponseModel.createBy(mainCategoryList)
     }
 }

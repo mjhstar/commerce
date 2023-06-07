@@ -1,14 +1,9 @@
 package com.clone.commerce.user.model.request
 
-class FindIdRequest(
+class FindIdRequestModel(
     val name: String,
     private val phoneNumber: String
 ) {
-    fun toModel() = FindIdRequestModel(
-        name = this.name,
-        phoneNumber = this.phoneNumber
-    )
-
     fun getPH():String{
         return this.phoneNumber.replace("-","")
     }

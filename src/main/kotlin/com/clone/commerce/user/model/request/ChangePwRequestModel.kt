@@ -5,7 +5,7 @@ import com.clone.commerce.common.extension.TimeUtils
 import com.clone.commerce.common.extension.aesDecode
 import com.clone.commerce.common.extension.aesEncode
 
-class ChangePwRequest(
+class ChangePwRequestModel(
     val email: String,
     val name: String,
     private val phoneNumber: String,
@@ -13,14 +13,6 @@ class ChangePwRequest(
     private val password: String,
     private val checkPassword: String
 ) {
-    fun toModel() = ChangePwRequestModel(
-        email = this.email,
-        name = this.name,
-        phoneNumber = this.phoneNumber,
-        key = this.key,
-        password = this.password,
-        checkPassword = this.checkPassword
-    )
     fun checkPassword(): Boolean {
         return this.password == checkPassword
     }

@@ -9,18 +9,18 @@ import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.user.entity.User
 import com.clone.commerce.user.model.AccessTokenParam
-import com.clone.commerce.user.model.request.ChangePwRequest
-import com.clone.commerce.user.model.request.FindIdRequest
-import com.clone.commerce.user.model.request.FindPwRequest
-import com.clone.commerce.user.model.request.LoginRequest
-import com.clone.commerce.user.model.request.RefreshTokenRequest
-import com.clone.commerce.user.model.request.SignUpRequest
-import com.clone.commerce.user.model.response.ChangePwResponse
-import com.clone.commerce.user.model.response.FindIdResponse
-import com.clone.commerce.user.model.response.FindPwResponse
-import com.clone.commerce.user.model.response.LoginResponse
-import com.clone.commerce.user.model.response.RefreshTokenResponse
-import com.clone.commerce.user.model.response.SignUpResponse
+import com.clone.commerce.user.model.request.ChangePwRequestModel
+import com.clone.commerce.user.model.request.FindIdRequestModel
+import com.clone.commerce.user.model.request.FindPwRequestModel
+import com.clone.commerce.user.model.request.LoginRequestModel
+import com.clone.commerce.user.model.request.RefreshTokenRequestModel
+import com.clone.commerce.user.model.request.SignUpRequestModel
+import com.clone.commerce.user.model.response.ChangePwResponseModel
+import com.clone.commerce.user.model.response.FindIdResponseModel
+import com.clone.commerce.user.model.response.FindPwResponseModel
+import com.clone.commerce.user.model.response.LoginResponseModel
+import com.clone.commerce.user.model.response.RefreshTokenResponseModel
+import com.clone.commerce.user.model.response.SignUpResponseModel
 import com.clone.commerce.user.repository.UserRepository
 import com.clone.commerce.user.repository.createUser
 import com.clone.commerce.user.repository.findUser
@@ -31,7 +31,7 @@ class UserService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val userRepository: UserRepository
 ) {
-    fun signUp(request: SignUpRequest): SignUpResponse {
+    fun signUp(request: SignUpRequestModel): SignUpResponseModel {
         if (!request.email.isValidEmail()) {
             throw BusinessException(ErrorCode.INVALID_EMAIL)
         }
@@ -41,16 +41,16 @@ class UserService(
 
         val refreshToken = jwtTokenProvider.createRefreshToken(request.toRefreshTokenParam())
         val user = userRepository.createUser(User.createBy(request, refreshToken))
-
         val accessToken = jwtTokenProvider.createAccessToken(request.toAccessTokenParam(user.userIdx))
-        return SignUpResponse(
+
+        return SignUpResponseModel(
             accessToken = accessToken,
             refreshToken = refreshToken,
             userIdx = user.userIdx
         )
     }
 
-    fun getRefreshToken(request: RefreshTokenRequest): RefreshTokenResponse {
+    fun getRefreshToken(request: RefreshTokenRequestModel): RefreshTokenResponseModel {
         if (Keys.CLIENT_KEY != request.clientKey)
             throw BusinessException(ErrorCode.MISMATCH_TOKEN_ISSUER)
         val user = userRepository.findByEmail(request.email)
@@ -59,14 +59,14 @@ class UserService(
         if (password != request.password) {
             throw BusinessException(ErrorCode.INVALID_USER_PASSWORD)
         }
-        return RefreshTokenResponse(
+        return RefreshTokenResponseModel(
             refreshToken = user.refreshToken,
             email = user.email,
             userIdx = user.userIdx
         )
     }
 
-    fun login(request: LoginRequest): LoginResponse {
+    fun login(request: LoginRequestModel): LoginResponseModel {
         if (Keys.CLIENT_KEY != request.clientKey)
             throw BusinessException(ErrorCode.MISMATCH_TOKEN_ISSUER)
         val user = userRepository.findByEmail(request.email) ?: throw BusinessException(ErrorCode.INVALID_USER_EMAIL)
@@ -80,7 +80,7 @@ class UserService(
                 email = user.email
             )
         )
-        return LoginResponse(
+        return LoginResponseModel(
             email = user.email,
             userName = user.name,
             refreshToken = user.refreshToken,
@@ -88,18 +88,18 @@ class UserService(
         )
     }
 
-    fun findId(request: FindIdRequest): FindIdResponse {
+    fun findId(request: FindIdRequestModel): FindIdResponseModel {
         val user = userRepository.findUser(request.name, request.getPH())
-        return FindIdResponse(email = user.email)
+        return FindIdResponseModel(email = user.email)
     }
 
-    fun findPw(request: FindPwRequest): FindPwResponse {
+    fun findPw(request: FindPwRequestModel): FindPwResponseModel {
         val user = userRepository.findUser(
             name = request.name,
             phoneNumber = request.getPH(),
             email = request.email
         )
-        return FindPwResponse(
+        return FindPwResponseModel(
             name = user.name,
             email = user.email,
             phoneNumber = user.phoneNumber,
@@ -107,7 +107,7 @@ class UserService(
         )
     }
 
-    fun changePw(request: ChangePwRequest): ChangePwResponse {
+    fun changePw(request: ChangePwRequestModel): ChangePwResponseModel {
         if (!request.checkKey()) {
             throw BusinessException(ErrorCode.INVALID_REQUEST)
         }
@@ -118,13 +118,12 @@ class UserService(
             name = request.name,
             email = request.email,
             phoneNumber = request.getPH()
-        )
-        user.apply {
+        ).apply {
             this.password = request.getPW()
             this.updatedAt = TimeUtils.currentTimeMillis()
         }
         userRepository.save(user)
-        return ChangePwResponse(
+        return ChangePwResponseModel(
             email = user.email,
             complete = true
         )

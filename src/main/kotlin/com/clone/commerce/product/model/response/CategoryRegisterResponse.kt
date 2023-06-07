@@ -1,9 +1,5 @@
 package com.clone.commerce.product.model.response
 
-import com.clone.commerce.product.entity.DetailCategory
-import com.clone.commerce.product.entity.MainCategory
-import com.clone.commerce.product.entity.SubCategory
-
 class CategoryRegisterResponse(
     val mainCategoryIdx: Long,
     val mainCategoryName: String,
@@ -13,18 +9,14 @@ class CategoryRegisterResponse(
     val detailCategoryName: String?
 ) {
     companion object {
-        fun createBy(
-            mainCategory: MainCategory,
-            subCategory: SubCategory,
-            detailCategory: DetailCategory?
-        ): CategoryRegisterResponse {
+        fun createBy(model: CategoryRegisterResponseModel): CategoryRegisterResponse {
             return CategoryRegisterResponse(
-                mainCategoryIdx = mainCategory.idx,
-                mainCategoryName = mainCategory.name,
-                subCategoryIdx = subCategory.idx,
-                subCategoryName = subCategory.name,
-                detailCategoryIdx = detailCategory?.idx,
-                detailCategoryName = detailCategory?.name
+                mainCategoryIdx = model.mainCategoryIdx,
+                mainCategoryName = model.mainCategoryName,
+                subCategoryIdx = model.subCategoryIdx,
+                subCategoryName = model.subCategoryName,
+                detailCategoryIdx = model.detailCategoryIdx,
+                detailCategoryName = model.detailCategoryName
             )
         }
     }

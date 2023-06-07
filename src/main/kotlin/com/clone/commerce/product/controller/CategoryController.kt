@@ -1,15 +1,16 @@
 package com.clone.commerce.product.controller
 
-import com.clone.commerce.common.config.rx.SchedulerFactory
 import com.clone.commerce.common.extension.getEmail
 import com.clone.commerce.common.extension.getId
 import com.clone.commerce.common.extension.getType
 import com.clone.commerce.common.model.CommonResponse
-import com.clone.commerce.common.util.ResponseUtil
 import com.clone.commerce.product.model.request.CategoryRegisterRequest
 import com.clone.commerce.product.model.request.MainCategoryRegisterRequest
+import com.clone.commerce.product.model.response.AllCategoryResponse
+import com.clone.commerce.product.model.response.CategoryRegisterResponse
+import com.clone.commerce.product.model.response.MainCategoryRegisterResponse
+import com.clone.commerce.product.model.response.MainCategoryResponse
 import com.clone.commerce.product.service.CategoryService
-import io.reactivex.rxjava3.core.Observable
 import javax.servlet.http.HttpServletRequest
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
@@ -34,66 +35,37 @@ class CategoryController(
 
     @PostMapping(REGISTER_MAIN_CATEGORY)
     fun registerMainCategory(
-        servlet: HttpServletRequest,
-        authentication: Authentication,
-        @RequestBody request: MainCategoryRegisterRequest
-    ): Observable<CommonResponse> {
+        servlet: HttpServletRequest, authentication: Authentication, @RequestBody request: MainCategoryRegisterRequest
+    ): CommonResponse<MainCategoryRegisterResponse> {
         val userId = authentication.getEmail().getId()
         val userType = authentication.getType()
-        return ResponseUtil.result(
-            response = Observable.fromCallable {
-                categoryService.registerMainCategory(
-                    request.toModel(
-                        userType,
-                        userId
-                    )
-                )
-            },
-            scheduler = SchedulerFactory.GLOBAL.scheduler,
-            request = request,
-            servlet = servlet
-        )
+        val responseModel = categoryService.registerMainCategory(request.toModel(userType, userId))
+        return CommonResponse.success(MainCategoryRegisterResponse.createBy(responseModel))
     }
 
     @PostMapping(REGISTER_CATEGORY)
     fun registerCategory(
-        servlet: HttpServletRequest,
-        authentication: Authentication,
-        @RequestBody request: CategoryRegisterRequest
-    ): Observable<CommonResponse> {
+        servlet: HttpServletRequest, authentication: Authentication, @RequestBody request: CategoryRegisterRequest
+    ): CommonResponse<CategoryRegisterResponse> {
         val userId = authentication.getEmail().getId()
         val userType = authentication.getType()
-        return ResponseUtil.result(
-            response = Observable.fromCallable { categoryService.registerCategory(request, userId, userType) },
-            scheduler = SchedulerFactory.GLOBAL.scheduler,
-            request = request,
-            servlet = servlet
-        )
+        val responseModel = categoryService.registerCategory(request.toModel(userType, userId))
+        return CommonResponse.success(CategoryRegisterResponse.createBy(responseModel))
     }
 
     @GetMapping(ALL_CATEGORY)
     fun findAllCategory(
-        servlet: HttpServletRequest,
-        authentication: Authentication
-    ): Observable<CommonResponse> {
-        return ResponseUtil.result(
-            response = Observable.fromCallable { categoryService.findAllCategory() },
-            scheduler = SchedulerFactory.GLOBAL.scheduler,
-            request = null,
-            servlet = servlet
-        )
+        servlet: HttpServletRequest, authentication: Authentication
+    ): CommonResponse<AllCategoryResponse> {
+        val responseModel = categoryService.findAllCategory()
+        return CommonResponse.success(AllCategoryResponse.createBy(responseModel))
     }
 
     @GetMapping(MAIN_CATEGORY)
     fun findMainCategory(
-        servlet: HttpServletRequest,
-        authentication: Authentication
-    ): Observable<CommonResponse> {
-        return ResponseUtil.result(
-            response = Observable.fromCallable { categoryService.findMainCategory() },
-            scheduler = SchedulerFactory.GLOBAL.scheduler,
-            request = null,
-            servlet = servlet
-        )
+        servlet: HttpServletRequest, authentication: Authentication
+    ): CommonResponse<MainCategoryResponse> {
+        val responseModel = categoryService.findMainCategory()
+        return CommonResponse.success(MainCategoryResponse.createBy(responseModel))
     }
 }

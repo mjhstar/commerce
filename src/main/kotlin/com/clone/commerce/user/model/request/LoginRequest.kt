@@ -5,4 +5,9 @@ class LoginRequest(
     val refreshToken: String,
     val clientKey: String
 ) {
+    fun toModel() = LoginRequestModel(
+        email = this.email,
+        refreshToken = this.refreshToken,
+        clientKey = this.clientKey
+    )
 }

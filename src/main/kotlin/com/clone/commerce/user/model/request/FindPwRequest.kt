@@ -5,7 +5,13 @@ class FindPwRequest(
     val name: String,
     private val phoneNumber: String
 ) {
-    fun getPH():String{
-        return this.phoneNumber.replace("-","").trim()
+    fun toModel() = FindPwRequestModel(
+        email = this.email,
+        name = this.name,
+        phoneNumber = this.phoneNumber
+    )
+
+    fun getPH(): String {
+        return this.phoneNumber.replace("-", "").trim()
     }
 }

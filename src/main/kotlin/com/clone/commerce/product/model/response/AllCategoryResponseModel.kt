@@ -1,6 +1,8 @@
 package com.clone.commerce.product.model.response
 
-class AllCategoryResponse(
+import com.clone.commerce.product.entity.MainCategory
+
+class AllCategoryResponseModel(
     val mainCategory: List<MainCategoryItem>
 ) {
     class MainCategoryItem(
@@ -21,9 +23,9 @@ class AllCategoryResponse(
     )
 
     companion object {
-        fun createBy(model: AllCategoryResponseModel): AllCategoryResponse {
-            return AllCategoryResponse(
-                mainCategory = model.mainCategory.map { main ->
+        fun createBy(mainCategoryList: List<MainCategory>): AllCategoryResponseModel {
+            return AllCategoryResponseModel(
+                mainCategory = mainCategoryList.map { main ->
                     MainCategoryItem(
                         idx = main.idx,
                         name = main.name,
