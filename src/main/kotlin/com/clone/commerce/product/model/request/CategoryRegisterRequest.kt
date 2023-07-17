@@ -7,12 +7,12 @@ class CategoryRegisterRequest(
     val subCategoryName: String,
     val detailCategoryName: String?
 ) {
-    fun toModel(userType: UserType, userId: String) = CategoryRegisterRequestModel(
+    fun toModel(userType: UserType, userIdx: Long) = CategoryRegisterRequestModel(
         mainCategoryIdx = this.mainCategoryIdx,
         subCategoryName = this.subCategoryName,
         detailCategoryName = this.detailCategoryName,
         userType = userType,
-        userId = userId
+        userIdx = userIdx
 
     )
 }

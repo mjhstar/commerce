@@ -24,7 +24,7 @@ class DetailCategory(
     val subCategory: SubCategory,
     val createdAt: Long = TimeUtils.currentTimeMillis(),
     val updatedAt: Long? = null,
-    val createdBy: String,
+    val createdBy: Long,
     val updatedBy: String? = null
 ) {
 }

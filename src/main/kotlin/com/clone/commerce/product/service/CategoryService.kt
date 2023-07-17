@@ -1,5 +1,6 @@
 package com.clone.commerce.product.service
 
+import com.clone.commerce.common.extension.isTrueThen
 import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.product.entity.DetailCategory
@@ -32,7 +33,7 @@ class CategoryService(
         val mainCategory = mainCategoryRepository.save(
             MainCategory(
                 name = request.categoryName,
-                createdBy = request.userId
+                createdBy = request.userIdx
             )
         )
         return MainCategoryRegisterResponseModel(
@@ -53,15 +54,15 @@ class CategoryService(
             SubCategory(
                 name = request.subCategoryName,
                 mainCategory = mainCategory,
-                createdBy = request.userId
+                createdBy = request.userIdx
             )
         )
-        val detailCategory = request.detailCategoryName?.let {
+        val detailCategory = request.detailCategoryName?.isNotEmpty()?.isTrueThen {
             detailCategoryRepository.save(
                 DetailCategory(
-                    name = it,
+                    name = request.detailCategoryName,
                     subCategory = subCategory,
-                    createdBy = request.userId
+                    createdBy = request.userIdx
                 )
             )
         }

@@ -22,7 +22,7 @@ class MainCategory(
     val subCategory: List<SubCategory> = emptyList(),
     val createdAt: Long = TimeUtils.currentTimeMillis(),
     val updatedAt: Long? = null,
-    val createdBy: String,
+    val createdBy: Long,
     val updatedBy: String? = null
 ) {
 }

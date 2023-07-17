@@ -1,40 +1,27 @@
 package com.clone.commerce.user.controller
 
 import com.clone.commerce.common.model.CommonResponse
-import com.clone.commerce.user.model.request.ChangePwRequest
-import com.clone.commerce.user.model.request.FindIdRequest
-import com.clone.commerce.user.model.request.FindPwRequest
-import com.clone.commerce.user.model.request.LoginRequest
-import com.clone.commerce.user.model.request.RefreshTokenRequest
-import com.clone.commerce.user.model.request.SignUpRequest
-import com.clone.commerce.user.model.response.ChangePwResponse
-import com.clone.commerce.user.model.response.FindIdResponse
-import com.clone.commerce.user.model.response.FindPwResponse
-import com.clone.commerce.user.model.response.LoginResponse
-import com.clone.commerce.user.model.response.RefreshTokenResponse
-import com.clone.commerce.user.model.response.SignUpResponse
+import com.clone.commerce.user.model.request.*
+import com.clone.commerce.user.model.response.*
 import com.clone.commerce.user.service.UserService
+import org.springframework.web.bind.annotation.*
+import java.time.OffsetDateTime
 import javax.servlet.http.HttpServletRequest
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user/{apiVersion}")
 class UserController(
     private val userService: UserService
 ) {
     companion object {
-        private const val SIGNUP_URL = "/v1/signup"
-        private const val SIGNOUT_URL = "/v1/signout"
-        private const val LOGIN_URL = "/v1/login"
-        private const val LOGOUT_URL = "/v1/logout"
-        private const val FIND_ID_URL = "/v1/find/id"
-        private const val FIND_PW_URL = "/v1/find/password"
-        private const val CHANGE_PW_URL = "/v1/change/password"
-        private const val REFRESH_TOKEN_URL = "/v1/refresh-token"
+        private const val SIGNUP_URL = "/signup"
+        private const val SIGNOUT_URL = "/signout"
+        private const val LOGIN_URL = "/login"
+        private const val LOGOUT_URL = "/logout"
+        private const val FIND_ID_URL = "/find/id"
+        private const val FIND_PW_URL = "/find/password"
+        private const val CHANGE_PW_URL = "/change/password"
+        private const val REFRESH_TOKEN_URL = "/refresh-token"
     }
 
     @PostMapping(SIGNUP_URL)
@@ -42,8 +29,9 @@ class UserController(
         servlet: HttpServletRequest,
         @RequestBody request: SignUpRequest
     ): CommonResponse<SignUpResponse> {
+        val requestTime = OffsetDateTime.now()
         val responseModel = userService.signUp(request.toModel())
-        return CommonResponse.success(SignUpResponse.createBy(responseModel))
+        return CommonResponse.success(SignUpResponse.createBy(responseModel), requestTime)
     }
 
     @PostMapping(LOGIN_URL)
@@ -51,8 +39,9 @@ class UserController(
         servlet: HttpServletRequest,
         @RequestBody request: LoginRequest
     ): CommonResponse<LoginResponse> {
+        val requestTime = OffsetDateTime.now()
         val responseModel = userService.login(request.toModel())
-        return CommonResponse.success(LoginResponse.createBy(responseModel))
+        return CommonResponse.success(LoginResponse.createBy(responseModel), requestTime)
     }
 
     @PostMapping(REFRESH_TOKEN_URL)
@@ -60,8 +49,9 @@ class UserController(
         servlet: HttpServletRequest,
         @RequestBody request: RefreshTokenRequest
     ): CommonResponse<RefreshTokenResponse> {
+        val requestTime = OffsetDateTime.now()
         val responseModel = userService.getRefreshToken(request.toModel())
-        return CommonResponse.success(RefreshTokenResponse.createBy(responseModel))
+        return CommonResponse.success(RefreshTokenResponse.createBy(responseModel), requestTime)
     }
 
     @PostMapping(FIND_ID_URL)
@@ -69,8 +59,9 @@ class UserController(
         servlet: HttpServletRequest,
         @RequestBody request: FindIdRequest
     ): CommonResponse<FindIdResponse> {
+        val requestTime = OffsetDateTime.now()
         val responseModel = userService.findId(request.toModel())
-        return CommonResponse.success(FindIdResponse.createBy(responseModel))
+        return CommonResponse.success(FindIdResponse.createBy(responseModel), requestTime)
     }
 
     @PostMapping(FIND_PW_URL)
@@ -78,8 +69,9 @@ class UserController(
         servlet: HttpServletRequest,
         @RequestBody request: FindPwRequest
     ): CommonResponse<FindPwResponse> {
+        val requestTime = OffsetDateTime.now()
         val responseModel = userService.findPw(request.toModel())
-        return CommonResponse.success(FindPwResponse.createBy(responseModel))
+        return CommonResponse.success(FindPwResponse.createBy(responseModel), requestTime)
     }
 
     @PutMapping(CHANGE_PW_URL)
@@ -87,7 +79,8 @@ class UserController(
         servlet: HttpServletRequest,
         @RequestBody request: ChangePwRequest
     ): CommonResponse<ChangePwResponse> {
+        val requestTime = OffsetDateTime.now()
         val responseModel = userService.changePw(request.toModel())
-        return CommonResponse.success(ChangePwResponse.createBy(responseModel))
+        return CommonResponse.success(ChangePwResponse.createBy(responseModel), requestTime)
     }
 }

@@ -36,10 +36,11 @@ dependencies {
     implementation("com.amazonaws:aws-java-sdk-core:1.12.17")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("mysql:mysql-connector-java:8.0.29")
-    implementation("com.querydsl:querydsl-apt:$querydslVersion")
-    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
-    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-core:5.0.0")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-kotlin-codegen:5.0.0")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
@@ -50,8 +51,6 @@ dependencies {
     implementation("com.querydsl:querydsl-mongodb:$querydslVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-
-
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {

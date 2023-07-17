@@ -7,6 +7,6 @@ class CategoryRegisterRequestModel(
     val subCategoryName: String,
     val detailCategoryName: String?,
     val userType: UserType,
-    val userId: String
+    val userIdx: Long
 ) {
 }

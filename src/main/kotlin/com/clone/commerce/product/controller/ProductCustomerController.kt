@@ -4,10 +4,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/product/customer")
-class CustomerProductController(
+@RequestMapping("/product/customer/{apiVersion}")
+class ProductCustomerController(
 ) {
     companion object{
-        private const val FIND_PRODUCT = "/v1/product"
+        private const val FIND_PRODUCT = "/product"
     }
 }
