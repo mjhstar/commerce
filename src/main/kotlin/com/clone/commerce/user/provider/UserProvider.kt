@@ -6,7 +6,7 @@ import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.user.entity.User
 import com.clone.commerce.user.enums.UserType
-import com.clone.commerce.user.model.UserDto
+import com.clone.commerce.user.model.dto.UserDto
 import com.clone.commerce.user.model.request.ChangePwRequestModel
 import com.clone.commerce.user.model.request.SignUpRequestModel
 import com.clone.commerce.user.repository.UserRepository

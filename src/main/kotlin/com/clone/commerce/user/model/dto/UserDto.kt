@@ -1,4 +1,4 @@
-package com.clone.commerce.user.model
+package com.clone.commerce.user.model.dto
 
 import com.clone.commerce.user.entity.User
 import com.clone.commerce.user.enums.UserType
@@ -15,7 +15,7 @@ class UserDto(
 ) {
 
     companion object{
-        fun createBy(user: User): UserDto{
+        fun createBy(user: User): UserDto {
             return UserDto(
                 userIdx = user.userIdx,
                 type = user.type,
