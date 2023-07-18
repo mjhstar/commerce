@@ -16,12 +16,12 @@ class UserController(
     companion object {
         private const val SIGNUP_URL = "/signup"
         private const val SIGNOUT_URL = "/signout"
-        private const val LOGIN_URL = "/login"
+        private const val ACCESS_TOKEN_URL = "/access-token"
         private const val LOGOUT_URL = "/logout"
         private const val FIND_ID_URL = "/find/id"
         private const val FIND_PW_URL = "/find/password"
         private const val CHANGE_PW_URL = "/change/password"
-        private const val REFRESH_TOKEN_URL = "/refresh-token"
+        private const val LOGIN_URL = "/login"
     }
 
     @PostMapping(SIGNUP_URL)
@@ -35,25 +35,25 @@ class UserController(
         return CommonResponse.success(SignUpResponse.createBy(responseModel), requestTime)
     }
 
-    @PostMapping(LOGIN_URL)
+    @PostMapping(ACCESS_TOKEN_URL)
     fun login(
         servlet: HttpServletRequest,
         @PathVariable apiVersion: String,
         @RequestBody request: LoginRequest
     ): CommonResponse<LoginResponse> {
         val requestTime = TimeUtils.currentTimeMillis()
-        val responseModel = userService.login(request.toModel())
+        val responseModel = userService.getAccessToken(request.toModel())
         return CommonResponse.success(LoginResponse.createBy(responseModel), requestTime)
     }
 
-    @PostMapping(REFRESH_TOKEN_URL)
+    @PostMapping(LOGIN_URL)
     fun getRefreshToken(
         servlet: HttpServletRequest,
         @PathVariable apiVersion: String,
         @RequestBody request: RefreshTokenRequest
     ): CommonResponse<RefreshTokenResponse> {
         val requestTime = TimeUtils.currentTimeMillis()
-        val responseModel = userService.getRefreshToken(request.toModel())
+        val responseModel = userService.login(request.toModel())
         return CommonResponse.success(RefreshTokenResponse.createBy(responseModel), requestTime)
     }
 

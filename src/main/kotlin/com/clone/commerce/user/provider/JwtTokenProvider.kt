@@ -1,4 +1,4 @@
-package com.clone.commerce.user.service
+package com.clone.commerce.user.provider
 
 import com.clone.commerce.common.config.security.Keys
 import com.clone.commerce.common.extension.TimeUtils

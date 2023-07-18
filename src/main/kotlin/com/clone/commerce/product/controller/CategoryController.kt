@@ -2,6 +2,7 @@ package com.clone.commerce.product.controller
 
 import com.clone.commerce.common.extension.*
 import com.clone.commerce.common.model.CommonResponse
+import com.clone.commerce.product.model.request.CategoryDeleteRequest
 import com.clone.commerce.product.model.request.CategoryRegisterRequest
 import com.clone.commerce.product.model.request.CategorySearchRequest
 import com.clone.commerce.product.model.response.AllCategoryResponse
@@ -45,6 +46,20 @@ class CategoryController(
         val requestTime = TimeUtils.currentTimeMillis()
         val responseModel = categoryService.findCategory(request?.toModel())
         return CommonResponse.success(CategorySearchResponse.createBy(responseModel), requestTime)
+    }
+
+    @DeleteMapping("")
+    fun deleteCategory(
+        servlet: HttpServletRequest,
+        authentication: Authentication,
+        @PathVariable apiVersion: String,
+        @ModelAttribute request: CategoryDeleteRequest
+    ): CommonResponse<Boolean> {
+        val requestTime = TimeUtils.currentTimeMillis()
+        val userIdx = authentication.getUserIdx()
+        val userType = authentication.getType()
+        val response = categoryService.deleteCategory(request.toModel(userIdx, userType))
+        return CommonResponse.success(response, requestTime)
     }
 
     @GetMapping(ALL_CATEGORY)

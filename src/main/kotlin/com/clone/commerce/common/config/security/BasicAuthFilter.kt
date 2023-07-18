@@ -2,7 +2,7 @@ package com.clone.commerce.common.config.security
 
 import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
-import com.clone.commerce.user.service.JwtTokenProvider
+import com.clone.commerce.user.provider.JwtTokenProvider
 import io.jsonwebtoken.ExpiredJwtException
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest

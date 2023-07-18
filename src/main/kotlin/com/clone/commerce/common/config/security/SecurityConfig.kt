@@ -1,6 +1,6 @@
 package com.clone.commerce.common.config.security
 
-import com.clone.commerce.user.service.JwtTokenProvider
+import com.clone.commerce.user.provider.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
