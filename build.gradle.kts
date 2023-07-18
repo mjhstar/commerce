@@ -3,11 +3,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val kotlinVersion = "1.6.21"
     id("org.springframework.boot") version "2.7.6"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
+    idea
+}
+idea {
+    module { val kaptMain = file("build/generated/source/kapt/main")
+        sourceDirs.add(kaptMain)
+        generatedSourceDirs.add(kaptMain) }
 }
 
 group = "com.clone.commerce"
@@ -37,10 +43,9 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("mysql:mysql-connector-java:8.0.33")
-    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-jpa:5.0.0")
     implementation("com.querydsl:querydsl-core:5.0.0")
-    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    kapt("com.querydsl:querydsl-kotlin-codegen:5.0.0")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
@@ -48,7 +53,7 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-sync:4.0.5")
     implementation("org.mongodb:bson:4.0.5")
 
-    implementation("com.querydsl:querydsl-mongodb:$querydslVersion")
+//    implementation("com.querydsl:querydsl-mongodb:$querydslVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
@@ -58,8 +63,13 @@ dependencies {
     }
 }
 
-kapt {
-    annotationProcessor("org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor")
+//kapt {
+//    annotationProcessor("org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor")
+//}
+
+kotlin.sourceSets.main {
+    println("kotlin sourceSets builDir:: $buildDir")
+    setBuildDir("$buildDir")
 }
 
 tasks.withType<KotlinCompile> {

@@ -19,6 +19,7 @@ enum class ErrorCode(
 
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "CATE-1", "카테고리가 이미 존재합니다."),
     NOT_EXIST_CATEGORY(HttpStatus.BAD_REQUEST, "CATE-2", "카테고리가 존재하지 않습니다."),
+    FAIL_REGISTER_CATEGORY(HttpStatus.INTERNAL_SERVER_ERROR, "CATE-3", "카테고리 등록에 실패하였습니다."),
 
 
 

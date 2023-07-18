@@ -1,31 +1,15 @@
 package com.clone.commerce.product.model.response
 
-import com.clone.commerce.product.entity.DetailCategory
-import com.clone.commerce.product.entity.MainCategory
-import com.clone.commerce.product.entity.SubCategory
+import com.clone.commerce.product.model.dto.CategoryDto
+import com.clone.commerce.product.model.response.item.CategoryItem
 
 class CategoryRegisterResponseModel(
-    val mainCategoryIdx: Long,
-    val mainCategoryName: String,
-    val subCategoryIdx: Long,
-    val subCategoryName: String,
-    val detailCategoryIdx: Long?,
-    val detailCategoryName: String?
+    val category: CategoryItem
 ) {
+
     companion object {
-        fun createBy(
-            mainCategory: MainCategory,
-            subCategory: SubCategory,
-            detailCategory: DetailCategory?
-        ): CategoryRegisterResponseModel {
-            return CategoryRegisterResponseModel(
-                mainCategoryIdx = mainCategory.idx,
-                mainCategoryName = mainCategory.name,
-                subCategoryIdx = subCategory.idx,
-                subCategoryName = subCategory.name,
-                detailCategoryIdx = detailCategory?.idx,
-                detailCategoryName = detailCategory?.name
-            )
+        fun createBy(category: CategoryDto): CategoryRegisterResponseModel {
+            return CategoryRegisterResponseModel(CategoryItem.createBy(category))
         }
     }
 }

@@ -3,9 +3,9 @@ package com.clone.commerce.common.web.exception
 import java.time.OffsetDateTime
 
 class ErrorResponse(
-    val timestamp: OffsetDateTime,
-    val status: Int,
+    val timestamp: OffsetDateTime = OffsetDateTime.now(),
     val message: String?,
-    val data: Any?
-) {
-}
+    val path: String?,
+    val serviceName: String,
+    val errorCode: String
+)
