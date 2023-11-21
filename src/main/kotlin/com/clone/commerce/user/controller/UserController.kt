@@ -1,7 +1,7 @@
 package com.clone.commerce.user.controller
 
-import com.clone.commerce.common.extension.TimeUtils
 import com.clone.commerce.common.model.CommonResponse
+import com.clone.commerce.common.support.extension.TimeUtils
 import com.clone.commerce.user.model.request.*
 import com.clone.commerce.user.model.response.*
 import com.clone.commerce.user.service.UserService

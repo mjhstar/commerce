@@ -1,15 +1,11 @@
 package com.clone.commerce.user.entity
 
-import com.clone.commerce.common.extension.TimeUtils
+import com.clone.commerce.common.support.extension.TimeUtils
+import com.clone.commerce.point.entity.Point
 import com.clone.commerce.user.enums.UserType
 import com.clone.commerce.user.model.dto.UserDto
 import com.clone.commerce.user.model.request.SignUpRequestModel
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity(name = "USER")
 class User(
@@ -22,14 +18,17 @@ class User(
     val email: String,
     var password: String,
     val phoneNumber: String,
-    val refreshToken: String,
+    var refreshToken: String,
     val terms: String,
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val point: Point? = null,
     val createdAt: Long = TimeUtils.currentTimeMillis(),
     var updatedAt: Long? = null
 ) {
     fun toDto(): UserDto {
         return UserDto.createBy(this)
     }
+
     companion object {
         fun createBy(request: SignUpRequestModel, token: String): User {
             return User(

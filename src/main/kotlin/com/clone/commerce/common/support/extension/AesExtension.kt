@@ -1,13 +1,13 @@
-package com.clone.commerce.common.extension
+package com.clone.commerce.common.support.extension
 
 import com.amazonaws.util.Base16
 import com.amazonaws.util.Base64
 import com.clone.commerce.common.config.security.Keys
+import org.apache.commons.lang3.RandomStringUtils
 import java.security.Key
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import org.apache.commons.lang3.RandomStringUtils
 
 fun String.aesEncode(key: String = Keys.GENERAL_KEY, randomHeader: Boolean = true): String {
     return try {

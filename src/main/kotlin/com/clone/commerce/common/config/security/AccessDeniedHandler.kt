@@ -1,28 +1,28 @@
 package com.clone.commerce.common.config.security
 
-import com.clone.commerce.common.extension.TimeUtils
-import com.clone.commerce.common.extension.isNullOrEmptyOrBlank
-import com.clone.commerce.common.extension.toJson
 import com.clone.commerce.common.logging.Log
 import com.clone.commerce.common.logging.LoggingParam
-import java.nio.charset.StandardCharsets
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import com.clone.commerce.common.support.extension.TimeUtils
+import com.clone.commerce.common.support.extension.isNullOrEmptyOrBlank
+import com.clone.commerce.common.support.extension.toJson
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Component
-class AccessDeniedHandler: AccessDeniedHandler {
+class AccessDeniedHandler : AccessDeniedHandler {
     override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException
     ) {
         val param = LoggingParam().error(accessDeniedException).servlet(request)
-        if(param.request.isNullOrEmptyOrBlank()){
+        if (param.request.isNullOrEmptyOrBlank()) {
             Log.error(param)
         }
         response.apply {

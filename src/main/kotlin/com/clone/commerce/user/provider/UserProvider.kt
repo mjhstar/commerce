@@ -1,11 +1,12 @@
 package com.clone.commerce.user.provider
 
-import com.clone.commerce.common.extension.TimeUtils
-import com.clone.commerce.common.extension.aesDecode
+import com.clone.commerce.common.support.extension.TimeUtils
+import com.clone.commerce.common.support.extension.aesDecode
 import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.user.entity.User
 import com.clone.commerce.user.enums.UserType
+import com.clone.commerce.user.model.RefreshTokenParam
 import com.clone.commerce.user.model.dto.UserDto
 import com.clone.commerce.user.model.request.ChangePwRequestModel
 import com.clone.commerce.user.model.request.SignUpRequestModel
@@ -16,7 +17,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserProvider(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val jwtTokenProvider: JwtTokenProvider
 ) {
     fun getUserType(userIdx: Long): UserType {
         return userRepository.findByUserIdx(userIdx)?.type ?: throw BusinessException(ErrorCode.NOT_EXIST_USER)
@@ -27,8 +29,12 @@ class UserProvider(
         return user.toDto()
     }
 
-    fun existUser(email: String): Boolean {
+    fun isExistUser(email: String): Boolean {
         return userRepository.existsByEmail(email)
+    }
+
+    fun isExistUser(userIdx: Long): Boolean {
+        return userRepository.existsByUserIdx(userIdx)
     }
 
     fun getRefreshToken(email: String, inputPassword: String): UserDto {
@@ -39,6 +45,12 @@ class UserProvider(
             throw BusinessException(ErrorCode.INVALID_USER_PASSWORD)
         }
         return user.toDto()
+    }
+
+    fun getUserEntity(userIdx: Long): User {
+        val user = userRepository.findByUserIdx(userIdx)
+        requireNotNull(user) { throw BusinessException(ErrorCode.NOT_EXIST_USER) }
+        return user
     }
 
     fun getUser(email: String): UserDto {
@@ -55,18 +67,19 @@ class UserProvider(
 
     fun changePassword(request: ChangePwRequestModel): UserDto {
         try {
+            val key = TimeUtils.currentTimeMillis().toString()
             val user = userRepository.findUser(
                 name = request.name,
                 email = request.email,
                 phoneNumber = request.getPH()
             ).apply {
+                this.refreshToken = jwtTokenProvider.createRefreshToken(RefreshTokenParam(request.email, key))
                 this.password = request.getPW()
                 this.updatedAt = TimeUtils.currentTimeMillis()
             }
             return userRepository.save(user).toDto()
 
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             throw BusinessException(ErrorCode.FAIL_CHANGE_PASSWORD)
         }
     }

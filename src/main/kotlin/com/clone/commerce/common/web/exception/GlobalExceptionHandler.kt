@@ -1,6 +1,5 @@
 package com.clone.commerce.common.web.exception
 
-import com.clone.commerce.common.extension.toJson
 import com.clone.commerce.common.logging.LoggingCompanion
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.badRequest
@@ -59,14 +58,16 @@ class GlobalExceptionHandler(
             serviceName = "commerce",
             errorCode = e.code
         )
-        logger.error("""
+        logger.error(
+            """
             
             ==================Error occurred=====================
             errorCode : ${errorResponse.errorCode}
             message   : ${errorResponse.message}
             path      : ${errorResponse.path}
             =====================================================
-            """.trimIndent())
+            """.trimIndent()
+        )
         return status(e.httpStatus).body(errorResponse)
     }
 }

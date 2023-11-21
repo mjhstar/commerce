@@ -1,8 +1,8 @@
 package com.clone.commerce.user.model.request
 
-import com.clone.commerce.common.extension.aesEncode
-import com.clone.commerce.common.extension.toJson
-import com.clone.commerce.common.extension.toModel
+import com.clone.commerce.common.support.extension.aesEncode
+import com.clone.commerce.common.support.extension.toJson
+import com.clone.commerce.common.support.extension.toModel
 import com.clone.commerce.user.enums.UserType
 import com.clone.commerce.user.model.AccessTokenParam
 import com.clone.commerce.user.model.RefreshTokenParam
@@ -23,11 +23,11 @@ class SignUpRequestModel(
         val appPush: Boolean,
     )
 
-    fun getPH(): String{
+    fun getPH(): String {
         return this.phoneNumber.replace("-", "")
     }
 
-    fun getPW(): String{
+    fun getPW(): String {
         return this.password.aesEncode()
     }
 
@@ -36,15 +36,17 @@ class SignUpRequestModel(
         return termMap.filter { it.value }.keys.toJson()
     }
 
-    fun toRefreshTokenParam():RefreshTokenParam{
+    fun toRefreshTokenParam(key: String): RefreshTokenParam {
         return RefreshTokenParam(
+            key = key,
             email = this.email
         )
     }
 
-    fun toAccessTokenParam(userIdx: Long): AccessTokenParam{
+    fun toAccessTokenParam(userIdx: Long, key: String): AccessTokenParam {
         return AccessTokenParam(
             userIdx = userIdx,
+            key = key,
             type = this.type,
             email = this.email
         )

@@ -14,7 +14,7 @@ class UserDto(
     val createdAt: Long
 ) {
 
-    companion object{
+    companion object {
         fun createBy(user: User): UserDto {
             return UserDto(
                 userIdx = user.userIdx,

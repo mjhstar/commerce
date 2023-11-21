@@ -1,8 +1,8 @@
 package com.clone.commerce.common.logging
 
-import com.clone.commerce.common.extension.isNullOrEmptyOrBlank
-import javax.servlet.http.HttpServletRequest
+import com.clone.commerce.common.support.extension.isNullOrEmptyOrBlank
 import org.apache.commons.lang3.exception.ExceptionUtils
+import javax.servlet.http.HttpServletRequest
 
 class LoggingParam(
     var userIdx: Long? = null,
@@ -14,16 +14,16 @@ class LoggingParam(
     var responseTime: Long? = null,
     var ip: String? = null
 ) {
-    fun error(e: Throwable): LoggingParam{
+    fun error(e: Throwable): LoggingParam {
         this.error = ExceptionUtils.getStackTrace(e)
         return this
     }
 
-    fun servlet(servlet: HttpServletRequest): LoggingParam{
+    fun servlet(servlet: HttpServletRequest): LoggingParam {
         this.ip = Log.getIp(servlet)
         this.url = servlet.requestURL.toString()
         this.header = Log.getHeader(servlet)
-        if(this.request.isNullOrEmptyOrBlank()){
+        if (this.request.isNullOrEmptyOrBlank()) {
             this.request = Log.getRequestBody(servlet)
         }
         return this

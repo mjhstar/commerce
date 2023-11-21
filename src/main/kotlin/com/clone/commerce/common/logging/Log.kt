@@ -1,13 +1,13 @@
 package com.clone.commerce.common.logging
 
-import com.clone.commerce.common.extension.isNullOrEmptyOrBlank
-import com.clone.commerce.common.extension.toJson
+import com.clone.commerce.common.support.extension.isNullOrEmptyOrBlank
+import com.clone.commerce.common.support.extension.toJson
+import org.apache.commons.io.IOUtils
 import java.nio.charset.Charset
 import javax.servlet.http.HttpServletRequest
-import org.apache.commons.io.IOUtils
 
 class Log {
-    companion object: LoggingCompanion() {
+    companion object : LoggingCompanion() {
         fun getIp(servlet: HttpServletRequest): String {
             var ip = servlet.getHeader("X-Forwarded-For")
             if (ip.isNullOrEmptyOrBlank()) {
@@ -37,10 +37,10 @@ class Log {
         fun getRequestBody(servlet: HttpServletRequest): String {
             return try {
                 var body = IOUtils.toString(servlet.inputStream, Charset.defaultCharset())
-                if(body.isNullOrEmptyOrBlank()){
+                if (body.isNullOrEmptyOrBlank()) {
                     body = servlet.parameterMap.toJson()
                 }
-                if(body.length > 1000){
+                if (body.length > 1000) {
                     body = body.substring(0, 1000)
                 }
                 body
@@ -49,7 +49,7 @@ class Log {
             }
         }
 
-        fun getLoggingParam(param: LoggingParam): Map<String, Any?>{
+        fun getLoggingParam(param: LoggingParam): Map<String, Any?> {
             val logParam = mutableMapOf<String, Any?>()
             logParam["userIdx"] = param.userIdx
             logParam["url"] = param.url
@@ -62,13 +62,13 @@ class Log {
             return logParam.filter { it.value != null }
         }
 
-        fun<T> success(data: T, param: LoggingParam): T{
+        fun <T> success(data: T, param: LoggingParam): T {
             success(param)
             return data
         }
 
 
-        fun success(param: LoggingParam){
+        fun success(param: LoggingParam) {
             val logParam = getLoggingParam(param)
             logger.info(logParam.toJson())
         }

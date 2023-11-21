@@ -1,6 +1,6 @@
 package com.clone.commerce.product.entity
 
-import com.clone.commerce.common.extension.TimeUtils
+import com.clone.commerce.common.support.extension.TimeUtils
 import com.clone.commerce.product.model.dto.CategoryDto
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
@@ -16,7 +16,7 @@ class Category(
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="parentCategoryIdx")
+    @JoinColumn(name = "parentCategoryIdx")
     val parentCategory: Category? = null,
 
     @JsonIgnore
@@ -26,7 +26,7 @@ class Category(
     val createdAt: Long = TimeUtils.currentTimeMillis(),
     val updatedAt: Long? = null
 ) {
-    fun toDto(): CategoryDto{
+    fun toDto(): CategoryDto {
         return CategoryDto.createBy(this)
     }
 }

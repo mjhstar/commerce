@@ -1,8 +1,8 @@
 package com.clone.commerce.common.web
 
-import com.clone.commerce.common.extension.TimeUtils
-import com.clone.commerce.common.extension.getUserIdx
 import com.clone.commerce.common.model.CommonResponse
+import com.clone.commerce.common.support.extension.TimeUtils
+import com.clone.commerce.common.support.extension.getUserIdx
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

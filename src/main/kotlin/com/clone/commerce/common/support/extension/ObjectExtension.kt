@@ -1,12 +1,12 @@
-package com.clone.commerce.common.extension
+package com.clone.commerce.common.support.extension
 
-import java.util.Optional
+import java.util.*
 
-fun Any?.isNullOrEmptyOrBlank():Boolean{
-    if(this == null){
+fun Any?.isNullOrEmptyOrBlank(): Boolean {
+    if (this == null) {
         return true
     }
-    if(this is String && this.trim().isEmpty()){
+    if (this is String && this.trim().isEmpty()) {
         return true
     }
     if (this is Map<*, *> && this.isEmpty()) {

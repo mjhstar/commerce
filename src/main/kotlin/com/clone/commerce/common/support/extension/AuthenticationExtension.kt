@@ -1,4 +1,4 @@
-package com.clone.commerce.common.extension
+package com.clone.commerce.common.support.extension
 
 import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
@@ -30,7 +30,7 @@ fun Authentication.getEmail(): String {
     }
 }
 
-fun Authentication.getId(): String{
+fun Authentication.getId(): String {
     return try {
         (this.principal as User).email.getId()
     } catch (e: Exception) {

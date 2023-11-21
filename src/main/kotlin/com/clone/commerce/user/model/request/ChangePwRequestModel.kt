@@ -1,9 +1,9 @@
 package com.clone.commerce.user.model.request
 
 import com.clone.commerce.common.config.security.Keys
-import com.clone.commerce.common.extension.TimeUtils
-import com.clone.commerce.common.extension.aesDecode
-import com.clone.commerce.common.extension.aesEncode
+import com.clone.commerce.common.support.extension.TimeUtils
+import com.clone.commerce.common.support.extension.aesDecode
+import com.clone.commerce.common.support.extension.aesEncode
 
 class ChangePwRequestModel(
     val email: String,

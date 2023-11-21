@@ -1,7 +1,6 @@
 package com.clone.commerce.product.provider
 
-import com.clone.commerce.common.extension.isTrueThen
-import com.clone.commerce.common.extension.isTrueThenThrow
+import com.clone.commerce.common.support.extension.isTrueThen
 import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.product.entity.Category
@@ -12,7 +11,6 @@ import com.clone.commerce.product.model.request.CategorySearchRequestModel
 import com.clone.commerce.product.repository.CategoryRepository
 import com.querydsl.core.BooleanBuilder
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CategoryProvider(

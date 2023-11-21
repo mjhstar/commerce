@@ -10,11 +10,6 @@ plugins {
     kotlin("kapt") version kotlinVersion
     idea
 }
-idea {
-    module { val kaptMain = file("build/generated/source/kapt/main")
-        sourceDirs.add(kaptMain)
-        generatedSourceDirs.add(kaptMain) }
-}
 
 group = "com.clone.commerce"
 version = "0.0.1-SNAPSHOT"
@@ -62,10 +57,6 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
 }
-
-//kapt {
-//    annotationProcessor("org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor")
-//}
 
 kotlin.sourceSets.main {
     println("kotlin sourceSets builDir:: $buildDir")

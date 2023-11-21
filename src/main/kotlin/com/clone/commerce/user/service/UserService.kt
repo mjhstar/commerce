@@ -1,9 +1,9 @@
 package com.clone.commerce.user.service
 
 import com.clone.commerce.common.config.security.Keys
-import com.clone.commerce.common.extension.TimeUtils
-import com.clone.commerce.common.extension.aesEncode
-import com.clone.commerce.common.extension.isValidEmail
+import com.clone.commerce.common.support.extension.TimeUtils
+import com.clone.commerce.common.support.extension.aesEncode
+import com.clone.commerce.common.support.extension.isValidEmail
 import com.clone.commerce.common.web.exception.BusinessException
 import com.clone.commerce.common.web.exception.ErrorCode
 import com.clone.commerce.user.model.AccessTokenParam
@@ -22,13 +22,13 @@ class UserService(
         if (!request.email.isValidEmail()) {
             throw BusinessException(ErrorCode.INVALID_EMAIL)
         }
-        if (userProvider.existUser(request.email)) {
+        if (userProvider.isExistUser(request.email)) {
             throw BusinessException(ErrorCode.EXIST_EMAIL)
         }
-
-        val refreshToken = jwtTokenProvider.createRefreshToken(request.toRefreshTokenParam())
+        val key = TimeUtils.currentTimeMillis().toString()
+        val refreshToken = jwtTokenProvider.createRefreshToken(request.toRefreshTokenParam(key))
         val user = userProvider.createUser(request, refreshToken)
-        val accessToken = jwtTokenProvider.createAccessToken(request.toAccessTokenParam(user.userIdx))
+        val accessToken = jwtTokenProvider.createAccessToken(request.toAccessTokenParam(user.userIdx, key))
 
         return SignUpResponseModel(
             accessToken = accessToken,
@@ -55,9 +55,11 @@ class UserService(
         if (user.refreshToken != request.refreshToken) {
             throw BusinessException(ErrorCode.INVALID_USER_TOKEN)
         }
+        val key = jwtTokenProvider.getKey(user.refreshToken) ?: throw BusinessException(ErrorCode.INVALID_USER_TOKEN)
         val accessToken = jwtTokenProvider.createAccessToken(
             AccessTokenParam(
                 userIdx = user.userIdx,
+                key = key,
                 type = user.type,
                 email = user.email
             )

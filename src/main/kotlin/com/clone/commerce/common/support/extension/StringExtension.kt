@@ -1,4 +1,4 @@
-package com.clone.commerce.common.extension
+package com.clone.commerce.common.support.extension
 
 import java.util.regex.Pattern
 
@@ -14,6 +14,6 @@ fun String?.isValidEmail(): Boolean {
     return false
 }
 
-fun String.getId(): String{
+fun String.getId(): String {
     return this.substringBefore("@")
 }
